@@ -12,3 +12,4 @@ actix-web-lab = "0.19.1"
 actix-session = { version = "0.7.2", features = ["cookie-session"] }
 log = "0.4.17"
 env_logger = "0.10.0"
+serde = "1.0.152"
