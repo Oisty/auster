@@ -24,3 +24,6 @@ Cargo.lock
 
 # JetBrains specific
 .idea/
+
+# node modules
+node_modules/
