@@ -1,7 +1,7 @@
 use actix_identity::Identity;
-use actix_web::{HttpMessage, HttpRequest, Responder};
 use actix_web::http::StatusCode;
 use actix_web::web::Redirect;
+use actix_web::{HttpMessage, HttpRequest, Responder};
 
 pub(crate) async fn login(req: HttpRequest) -> impl Responder {
     Identity::login(&req.extensions(), "user1".to_owned()).unwrap();

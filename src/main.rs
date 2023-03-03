@@ -1,6 +1,9 @@
-use actix_identity::{IdentityMiddleware};
+use actix_identity::IdentityMiddleware;
 use actix_session::{config::PersistentSession, storage::CookieSessionStore, SessionMiddleware};
-use actix_web::{App, cookie::{time::Duration, Key}, HttpServer, middleware};
+use actix_web::{
+    cookie::{time::Duration, Key},
+    middleware, App, HttpServer,
+};
 use auster::config::config;
 
 const SESSION_DURATION: Duration = Duration::minutes(60);
@@ -26,7 +29,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(middleware::NormalizePath::trim())
             .wrap(middleware::Logger::default())
     })
-        .bind(("127.0.0.1", 8080))?
-        .run()
-        .await
+    .bind(("127.0.0.1", 8080))?
+    .run()
+    .await
 }
