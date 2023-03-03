@@ -27,3 +27,5 @@ Cargo.lock
 
 # node modules
 node_modules/
+# Ignore mac specific files
+.DS_Store
