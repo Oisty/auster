@@ -6,7 +6,9 @@
   <div
     class="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
   >
-    <div class="w-full max-w-md space-y-8 p-8 rounded-3xl dark:bg-gradient-radial-0 shadow-lg">
+    <div
+      class="dark:bg-gradient-radial-0 w-full max-w-md space-y-8 rounded-3xl p-8 shadow-lg"
+    >
       <div>
         <Logo class="mx-auto h-28 w-auto" />
         <h2
@@ -26,7 +28,7 @@
               type="email"
               autocomplete="email"
               required
-              class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 dark:border-gray-500 px-3 py-2 text-gray-900 dark:text-emphasis-high placeholder-gray-500 dark:placeholder-gray-300 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 dark:border-gray-500 dark:text-emphasis-high dark:placeholder-gray-300 sm:text-sm"
               placeholder="Email address"
             />
           </div>
@@ -38,7 +40,7 @@
               type="password"
               autocomplete="current-password"
               required
-              class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 dark:border-gray-500 px-3 py-2 text-gray-900 dark:text-emphasis-high placeholder-gray-500 dark:placeholder-gray-300 focus:z-10 focus:border-indigo-500 focus:dark:border-indigo-300 focus:outline-none focus:ring-indigo-500 focus:dark:ring-indigo-300  sm:text-sm"
+              class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 dark:border-gray-500 dark:text-emphasis-high dark:placeholder-gray-300 focus:dark:border-indigo-300 focus:dark:ring-indigo-300  sm:text-sm"
               placeholder="Password"
             />
           </div>
@@ -50,7 +52,7 @@
               id="remember-me"
               name="remember-me"
               type="checkbox"
-              class="h-4 w-4 rounded border-gray-300 text-indigo-600 dark:text-indigo-400 focus:ring-indigo-500 dark:focus:ring-indigo-400"
+              class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:text-indigo-400 dark:focus:ring-indigo-400"
             />
             <label
               for="remember-me"
@@ -62,7 +64,7 @@
           <div class="text-sm">
             <a
               href="#"
-              class="font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300"
+              class="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
               >Forgot your password?</a
             >
           </div>
@@ -71,7 +73,7 @@
         <div>
           <button
             type="submit"
-            class="group relative flex w-full justify-center rounded-full border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium dark:text-emphasis-high text-gray-50 hover:bg-indigo-700 dark:hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            class="group relative flex w-full justify-center rounded-full border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-gray-50 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-emphasis-high dark:hover:bg-indigo-500"
           >
             Sign in
             <div class="absolute inset-y-0 right-0 flex items-center pr-4">
