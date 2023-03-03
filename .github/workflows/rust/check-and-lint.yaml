@@ -1,9 +1,9 @@
 # Credits to https://github.com/BamPeers/rust-ci-github-actions-workflow/tree/main
 on:
   pull_request:
-    paths: ["web/**"]
+    paths: ["src/**"]
   push:
-    paths: ["web/**"]
+    paths: ["src/**"]
     branches:
       - main
 
