@@ -23,5 +23,8 @@
     "tslib": "^2.5.0",
     "typescript": "^4.9.3",
     "vite": "^4.1.4"
+  },
+  "dependencies": {
+    "svelte-routing": "^1.6.0"
   }
 }
