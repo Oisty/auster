@@ -25,4 +25,4 @@ jobs:
         with:
           #eslint: true
           prettier: true
-        working-directory: web
+          prettier_dir: web
