@@ -1,5 +1,6 @@
 <script>
   import Logo from "./Logo.svelte";
+  import OutlinedInput from "./Components/OutlinedInput.svelte";
 </script>
 
 <div
@@ -8,42 +9,30 @@
   <div
     class="dark:bg-gradient-radial-0 w-full max-w-md space-y-8 rounded-3xl p-8 shadow-lg"
   >
-    <div>
+    <header>
       <Logo class="mx-auto h-28 w-auto" />
       <h2
         class="mt-6 text-center text-3xl font-medium text-gray-900 dark:text-emphasis-high"
       >
         Sign in to your account
       </h2>
-    </div>
-    <form class="mt-8 space-y-6" action="#" method="POST">
-      <input type="hidden" name="remember" value="true" />
-      <div class="-space-y-px rounded-md shadow-sm">
-        <div>
-          <label for="email-address" class="sr-only">Email address</label>
-          <input
-            id="email-address"
-            name="email"
-            type="email"
-            autocomplete="email"
-            required
-            class="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 dark:border-gray-500 dark:text-emphasis-high dark:placeholder-gray-300 sm:text-sm"
-            placeholder="Email address"
-          />
-        </div>
-        <div>
-          <label for="password" class="sr-only">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autocomplete="current-password"
-            required
-            class="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 dark:border-gray-500 dark:text-emphasis-high dark:placeholder-gray-300 focus:dark:border-indigo-300 focus:dark:ring-indigo-300  sm:text-sm"
-            placeholder="Password"
-          />
-        </div>
-      </div>
+    </header>
+    <form class="space-y-6 px-5" action="#" method="POST">
+      <OutlinedInput
+        id="username"
+        name="username"
+        label="Username"
+        autocomplete="username"
+        required
+      />
+      <OutlinedInput
+        id="password"
+        name="password"
+        label="Password"
+        type="password"
+        autocomplete="current-password"
+        required
+      />
 
       <div class="flex items-center justify-between">
         <div class="flex items-center">
@@ -57,14 +46,6 @@
             for="remember-me"
             class="ml-2 block text-sm text-gray-900 dark:text-emphasis-medium"
             >Remember me</label
-          >
-        </div>
-
-        <div class="text-sm">
-          <a
-            href="#"
-            class="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
-            >Forgot your password?</a
           >
         </div>
       </div>

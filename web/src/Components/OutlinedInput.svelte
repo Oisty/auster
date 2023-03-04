@@ -54,6 +54,7 @@
       id={$$props.id}
       placeholder={$$props.placeholder ?? " "}
       on:change={handleValueChanged}
+      {...$$props}
     />
 
     <div
@@ -63,18 +64,20 @@
       <div class="w-4 {borderColor} rounded-l-md border-y border-l" />
 
       <!--Filler middle-->
-      <div
-        class="border-y {borderColor} {borderHoverColor} px-0.5 group-focus-within:border-t-transparent group-hover:group-focus-within:border-t-transparent group-focus-within:group-hover:border-t-transparent {borderTop}"
-      >
+      {#if $$props.label}
         <div
-          class="transition-all group-focus-within:-translate-y-3.5 {translate}"
+          class="border-y {borderColor} {borderHoverColor} px-0.5 group-focus-within:border-t-transparent group-hover:group-focus-within:border-t-transparent group-focus-within:group-hover:border-t-transparent {borderTop}"
         >
-          <label
-            class="{textColor} {fontSize} whitespace-nowrap group-focus-within:text-xs"
-            for={$$props.id}>{$$props.label}</label
+          <div
+            class="transition-all group-focus-within:-translate-y-3.5 {translate}"
           >
+            <label
+              class="{textColor} {fontSize} whitespace-nowrap group-focus-within:text-xs"
+              for={$$props.id}>{$$props.label}</label
+            >
+          </div>
         </div>
-      </div>
+      {/if}
 
       <!--Filler end-->
       <div class="w-full border-y border-r {borderColor} rounded-r-md" />
