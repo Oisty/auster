@@ -11,7 +11,7 @@ name: Check and Lint
 
 jobs:
   check:
-    name: Check
+    name: 🔧 Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -25,7 +25,7 @@ jobs:
           command: check
 
   fmt:
-    name: Rustfmt
+    name: 📦 Rustfmt
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -41,7 +41,7 @@ jobs:
           args: --all -- --check
 
   clippy:
-    name: Clippy
+    name: 📦 Clippy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
