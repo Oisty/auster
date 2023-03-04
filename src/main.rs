@@ -1,35 +1,45 @@
-use actix_identity::IdentityMiddleware;
-use actix_session::{config::PersistentSession, storage::CookieSessionStore, SessionMiddleware};
-use actix_web::{
-    cookie::{time::Duration, Key},
-    middleware, App, HttpServer,
-};
-use auster::config::config;
+use auster::configuration::get_configuration;
+use auster::startup::Application;
+use auster::telemetry::{get_subscriber, init_subscriber};
+use std::fmt::{Debug, Display};
+use tokio::task::JoinError;
 
-const SESSION_DURATION: Duration = Duration::minutes(60);
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
+    let subscriber = get_subscriber("auster".into(), "info".into(), std::io::stdout);
+    init_subscriber(subscriber);
 
-#[actix_web::main]
-async fn main() -> std::io::Result<()> {
-    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
-    let secret_key = Key::generate();
+    let configuration = get_configuration().expect("Failed to read configuration.");
+    let application = Application::build(configuration.clone()).await?;
+    let application_task = tokio::spawn(application.run_until_stopped());
 
-    log::info!("starting HTTP server at http://localhost:8080");
+    tokio::select! {
+        o = application_task => report_exit("API", o),
+    };
 
-    HttpServer::new(move || {
-        App::new()
-            .configure(config)
-            .wrap(IdentityMiddleware::default())
-            .wrap(
-                SessionMiddleware::builder(CookieSessionStore::default(), secret_key.clone())
-                    .cookie_name("auth-example".to_owned())
-                    .cookie_secure(false)
-                    .session_lifecycle(PersistentSession::default().session_ttl(SESSION_DURATION))
-                    .build(),
+    Ok(())
+}
+
+fn report_exit(task_name: &str, outcome: Result<Result<(), impl Debug + Display>, JoinError>) {
+    match outcome {
+        Ok(Ok(())) => {
+            tracing::info!("{} has exited", task_name)
+        }
+        Ok(Err(e)) => {
+            tracing::error!(
+                error.cause_chain = ?e,
+                error.message = %e,
+                "{} failed",
+                task_name
             )
-            .wrap(middleware::NormalizePath::trim())
-            .wrap(middleware::Logger::default())
-    })
-    .bind(("127.0.0.1", 8080))?
-    .run()
-    .await
+        }
+        Err(e) => {
+            tracing::error!(
+                error.cause_chain = ?e,
+                error.message = %e,
+                "{}' task failed to complete",
+                task_name
+            )
+        }
+    }
 }
