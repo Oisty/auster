@@ -36,7 +36,7 @@
 
   function handleValueChanged(event: Event) {
     value = (<HTMLInputElement>event.target).value;
-    console.log("Value changed", value);
+    dispatch("change", value);
   }
 </script>
 
