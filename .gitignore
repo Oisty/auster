@@ -25,7 +25,11 @@ Cargo.lock
 # JetBrains specific
 .idea/
 
+# Env Files
+.env
+
 # node modules
 node_modules/
+
 # Ignore mac specific files
 .DS_Store

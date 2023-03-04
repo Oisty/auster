@@ -10,3 +10,9 @@ services:
       POSTGRES_DB: auster
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - '6379:6379'
