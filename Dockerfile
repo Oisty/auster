@@ -30,7 +30,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY ./ ./
-# COPY --from=builder /app/dist /web/dist
+COPY --from=builder /app/dist /web/dist
 
 RUN cargo build --release
 
