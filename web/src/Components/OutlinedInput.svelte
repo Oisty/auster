@@ -1,7 +1,10 @@
 <script lang="ts">
+  import { createEventDispatcher } from "svelte";
+
   // Parameters
   export let assistiveText: string | null = null;
   export let isError: boolean = false;
+  export let value: string | null = null;
 
   // Computed styles
   const marginBottom = assistiveText ? "" : "mb-6";
@@ -9,10 +12,7 @@
     ? "border-red-300"
     : "group-focus-within:border-primary-100 group-hover:group-focus-within:border-primary-100 border-emphasis-low group-hover:border-emphasis-medium";
 
-  // Assume non empty strings are used
-  const isEmpty = !$$props.value || $$props.value === "";
-
-  const [translate, fontSize, borderTop, borderHoverColor] = isEmpty
+  $: [translate, fontSize, borderTop, borderHoverColor] = !value
     ? ["translate-y-1/3", "", "", ""]
     : [
         "-translate-y-3.5",
@@ -23,13 +23,21 @@
 
   const determineTextColor = () => {
     if (isError) return "text-red-300";
-    if (/*!isError &&*/ isEmpty)
+    if (/*!isError &&*/ !value)
       return "text-emphasis-medium group-focus-within:text-primary-100";
 
     return "text-emphasis-low group-focus-within:text-primary-100";
   };
 
   const textColor = determineTextColor();
+
+  // Events
+  const dispatch = createEventDispatcher();
+
+  function handleValueChanged(event: Event) {
+    value = (<HTMLInputElement>event.target).value;
+    console.log("Value changed", value);
+  }
 </script>
 
 <div>
@@ -45,7 +53,7 @@
       value={$$props.value ?? null}
       id={$$props.id}
       placeholder={$$props.placeholder ?? " "}
-      on:change
+      on:change={handleValueChanged}
     />
 
     <div
