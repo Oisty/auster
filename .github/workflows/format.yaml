@@ -19,6 +19,8 @@ jobs:
         uses: actions/setup-node@v3
       - name: 📦 Install dependencies
         run: cd web && npm ci
+      - name: Test prettier
+        run: npm run prettier
       - name: 💇 Run format
         uses: wearerequired/lint-action@v2
         with:
