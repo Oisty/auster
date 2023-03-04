@@ -1,9 +1,10 @@
 use crate::authentication::reject_anonymous_users;
 use crate::configuration::{DatabaseSettings, Settings};
 use crate::routes::{
-    admin_dashboard, change_password, change_password_form, health_check, home, log_out, login,
+    admin_dashboard, change_password, change_password_form, health_check, log_out, login,
     login_form,
 };
+use actix_files as fs;
 use actix_session::storage::RedisSessionStore;
 use actix_session::SessionMiddleware;
 use actix_web::cookie::Key;
@@ -84,7 +85,12 @@ async fn run(
                 secret_key.clone(),
             ))
             .wrap(TracingLogger::default())
-            .route("/", web::get().to(home))
+            .service(
+                fs::Files::new("/", "web/dist")
+                    .show_files_listing()
+                    .index_file("index.html")
+                    .use_last_modified(true),
+            )
             .service(
                 web::scope("/admin")
                     .wrap(from_fn(reject_anonymous_users))
