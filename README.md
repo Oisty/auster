@@ -47,6 +47,6 @@ without any additional terms or conditions.
 
 ## License
 
-Auster is licensed under Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE)
+Auster is licensed under Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE))
 
 The Auster website source is licensed under separate terms.
