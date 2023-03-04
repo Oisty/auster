@@ -2,7 +2,7 @@
 name = "auster"
 version = "0.1.0"
 edition = "2021"
-authors = ["Okan Celik <okan@celik.tech>", "Claas Möhlmann <claas.möhlmann@outlook.com"]
+authors = ["Okan Celik <okan@celik.tech>", "Claas Möhlmann <claas.möhlmann@outlook.com>"]
 
 [lib]
 path = "src/lib.rs"
