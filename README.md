@@ -5,7 +5,11 @@
 
 <div align="center">
 
-[![Releases](https://img.shields.io/github/release/projectoc/Auster/all.svg)](https://github.com/Oisty/Auster/releases)
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
 
 </div>
 
@@ -50,3 +54,15 @@ without any additional terms or conditions.
 Auster is licensed under Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE))
 
 The Auster website source is licensed under separate terms.
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[contributors-shield]: https://img.shields.io/github/contributors/Oisty/Auster.svg?style=for-the-badge
+[contributors-url]: https://github.com/Oisty/Auster/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/Oisty/Auster.svg?style=for-the-badge
+[forks-url]: https://github.com/Oisty/Auster/network/members
+[stars-shield]: https://img.shields.io/github/stars/Oisty/Auster.svg?style=for-the-badge
+[stars-url]: https://github.com/Oisty/Auster/stargazers
+[issues-shield]: https://img.shields.io/github/issues/Oisty/Auster.svg?style=for-the-badge
+[issues-url]: https://github.com/Oisty/Auster/issues
+[license-shield]: https://img.shields.io/github/license/Oisty/Auster.svg?style=for-the-badge
+[license-url]: https://github.com/Oisty/Auster/blob/master/LICENSE.txt
