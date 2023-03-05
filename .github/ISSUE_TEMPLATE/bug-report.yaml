@@ -1,28 +1,22 @@
 ---
-name: Bug Report
-about: Report behavior that deviates from specification or expectation
-title: ''
-labels: triage
-assignees: ''
+name: "Bug report \U0001F41E"
+about: Create a bug report
+labels: bug
+
 ---
 
-**Description**
-
-  A clear and concise description of what the bug is. This should include links to documentation that is contradicted or an explanation of why the present functionality doesn't match your expectation.
+## Describe the bug
+  A clear and concise description of what the bug is.
   
-  **To Reproduce**
+  ### Steps to reproduce
+  Steps to reproduce the behavior.
   
-  How to reproduce the bug. A fully working code example (`main.rs` + `Cargo.toml`) is preferred.
-  
-  **Expected Behavior**
-  
+  ### Expected behavior
   A clear and concise description of what you expected to happen.
-  
-  **Environment:**
 
-- OS Distribution and Kernel: [e.g. Arch Linux 4.16.13, macOS 11.2.1]
-- Auster Version: [e.g. 0.4.12, master@abf996b]
+### Environment
+- OS: [e.g. Arch Linux]
+- Other details that you think may affect.
 
-  **Additional Context**
-  
-  Add any other context about the problem here, for example, how you uncovered the bug or if you have ideas about what/where Auster is going wrong.
+### Additional context
+  Add any other context about the problem here.
