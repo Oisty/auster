@@ -15,7 +15,6 @@ test("Sign in has username and password input", async ({ mount }) => {
     .locator(passwordInputSelector)
     .elementHandle();
 
-  // Act
   // Assert
   expect(usernameInput).not.toBeNull();
   expect(passwordInput).not.toBeNull();
@@ -45,7 +44,8 @@ test("Sign in component username input should be required", async ({
     .getAttribute("required");
 
   // Assert
-  expect(requiredAttribute).not.toBeNull();
+  // It's an empty attribute that just has to be there as a flag
+  expect(requiredAttribute).toBe("");
 });
 
 test("Sign in component password input should be required", async ({
@@ -58,7 +58,7 @@ test("Sign in component password input should be required", async ({
     .locator(passwordInputSelector)
     .getAttribute("required");
 
-  // Act
   // Assert
-  expect(requiredAttribute).not.toBeNull();
+  // It's an empty attribute that just has to be there as a flag
+  expect(requiredAttribute).toBe("");
 });
