@@ -1,0 +1,7 @@
+on:
+  pull_request:
+    paths: ["web/**"]
+  push:
+    paths: ["web/**"]
+    branches:
+      - main
