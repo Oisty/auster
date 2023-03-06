@@ -1,5 +1,4 @@
 <script>
-  import Logo from "./Logo.svelte";
   import { Route, Router } from "svelte-routing";
   import SignIn from "./SignIn.svelte";
   import Debug from "./debug/Components.svelte";
