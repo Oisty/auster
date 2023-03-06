@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "prettier": "prettier --check src",
-    "test": "vite build && vitest --ui"
+    "test": "vite build && vitest --ui",
+    "test:ci": "vite build && vitest --run --reporter html --outputFile ./vitest-report/index.html"
   },
   "devDependencies": {
     "@playwright/test": "^1.31.2",
