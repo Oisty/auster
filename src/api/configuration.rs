@@ -65,7 +65,7 @@ pub struct EmailClientSettings {
 
 pub fn get_configuration() -> Result<Settings, config::ConfigError> {
     let base_path = std::env::current_dir().expect("Failed to determine the current directory");
-    let configuration_directory = base_path.join("configuration");
+    let configuration_directory = base_path.join("../../configuration");
 
     // Detect the running environment.
     // Default to `local` if unspecified.
