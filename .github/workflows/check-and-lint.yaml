@@ -1,9 +1,9 @@
 # Credits to https://github.com/BamPeers/rust-ci-github-actions-workflow/tree/main
 on:
   pull_request:
-    paths: ["src/**"]
+    paths: ["src/api/**"]
   push:
-    paths: ["src/**"]
+    paths: ["src/api/**"]
     branches:
       - main
 
@@ -13,6 +13,7 @@ jobs:
   check:
     name: 🔧 Check
     runs-on: ubuntu-latest
+    working-directory: src/api
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
@@ -27,6 +28,7 @@ jobs:
   fmt:
     name: 📦 Rustfmt
     runs-on: ubuntu-latest
+    working-directory: src/api
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
@@ -43,6 +45,7 @@ jobs:
   clippy:
     name: 📦 Clippy
     runs-on: ubuntu-latest
+    working-directory: src/api
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
