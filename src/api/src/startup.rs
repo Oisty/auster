@@ -86,7 +86,7 @@ async fn run(
             ))
             .wrap(TracingLogger::default())
             .service(
-                fs::Files::new("/", "web/dist")
+                fs::Files::new("/", "src/web/dist")
                     .show_files_listing()
                     .index_file("index.html")
                     .use_last_modified(true),
