@@ -5,11 +5,11 @@ edition = "2021"
 authors = ["Okan Celik <okan@celik.tech>", "Claas Möhlmann <claas.möhlmann@outlook.com>"]
 
 [[bin]]
-path = "main.rs"
+path = "src/main.rs"
 name = "auster"
 
 [lib]
-path = "lib.rs"
+path = "src/lib.rs"
 
 [dependencies]
 actix-session = { version = "0.7.2", features = ["redis-rs-tls-session"] }
