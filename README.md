@@ -15,15 +15,25 @@
 
 > :warning: Until the first development cycle is complete, please do not use Auster in any capacity. You will not receive any support for this project, as it is heavy in development.
 
-## Get Started
+## 🚀 Get Started
 
 > 🚧 There is currently no way to easily get started with running Auster as a user. We will add a Get Started when we have released the first runnable verion. 🚧
 
-## Get Started (Development)
+## 👷 Get Started (Development)
 
 _For frontend devs to start the backend and backend devs to start the frontend_
 
+### Frontend
+
+1. Install [Node.js](https://nodejs.org)
+2. Clone this repository
+3. Go to `src/web`
+4. Run `npm install` to install all dependencies
+5. Run `npm run dev` to run the vite dev server for the frontend. Alternatively you can `npm run build` to build it and host it with the backend.
+
 ### Backend
+
+ℹ️ If you want to see the front end hosted by the backend you need to run the steps for the frontend above first
 
 1. Install the [Rust](https://rust-lang.org) programming language toolchain
 2. Switch to Rust nightly version with
@@ -38,14 +48,6 @@ _For frontend devs to start the backend and backend devs to start the frontend_
 5. From the repository go to the `deployments` directory
 6. Run `docker compose up -d`. Then you're ready to run the API
 7. You find the API in `src/api` and can start it from there with `cargo run`
-
-### Frontend
-
-1. Install [Node.js](https://nodejs.org)
-2. Clone this repository
-3. Go to `src/web`
-4. Run `npm install` to install all dependencies
-5. Run `npm run dev` to run the vite dev server for the frontend
 
 ## Contributing
 
@@ -81,7 +83,7 @@ explicitly state otherwise, any contribution intentionally submitted for
 inclusion in Auster by you shall be licensed Apache License, Version 2.0,
 without any additional terms or conditions.
 
-## License
+## ⚖️ License
 
 Auster is licensed under Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE))
 
