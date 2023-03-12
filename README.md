@@ -21,18 +21,6 @@
 
 ## 👷 Get Started (Development)
 
-_For frontend devs to start the backend and backend devs to start the frontend_
-
-### Frontend
-
-1. Install [Node.js](https://nodejs.org)
-2. Clone this repository
-3. Go to `src/web`
-4. Run `npm install` to install all dependencies
-5. Run `npm run dev` to run the vite dev server for the frontend. Alternatively you can `npm run build` to build it and host it with the backend.
-
-### Backend
-
 ℹ️ If you want to see the front end hosted by the backend you need to run the steps for the frontend above first
 
 1. Install the [Rust](https://rust-lang.org) programming language toolchain
