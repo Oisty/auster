@@ -2,9 +2,7 @@ use crate::authentication::reject_anonymous_users;
 use crate::configuration::{DatabaseSettings, Settings};
 use crate::routes::{
     admin_dashboard, change_password, change_password_form, health_check, log_out, login,
-    login_form,
 };
-use actix_files as fs;
 use actix_session::storage::RedisSessionStore;
 use actix_session::SessionMiddleware;
 use actix_web::cookie::Key;
@@ -86,12 +84,6 @@ async fn run(
             ))
             .wrap(TracingLogger::default())
             .service(
-                fs::Files::new("/", "../web/dist")
-                    .show_files_listing()
-                    .index_file("index.html")
-                    .use_last_modified(true),
-            )
-            .service(
                 web::scope("/admin")
                     .wrap(from_fn(reject_anonymous_users))
                     .route("/dashboard", web::get().to(admin_dashboard))
@@ -99,9 +91,9 @@ async fn run(
                     .route("/password", web::post().to(change_password))
                     .route("/logout", web::post().to(log_out)),
             )
-            .route("/login", web::get().to(login_form))
-            .route("/login", web::post().to(login))
-            .route("/health_check", web::get().to(health_check))
+            .route("/signIn", web::post().to(login))
+            .route("/health", web::get().to(health_check))
+            .route("/ready", web::get().to(health_check))
             .app_data(db_pool.clone())
             .app_data(base_url.clone())
             .app_data(Data::new(HmacSecret(hmac_secret.clone())))
