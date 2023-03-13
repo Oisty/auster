@@ -1,9 +1,3 @@
-CREATE TYPE header_pair AS
-(
-    name  TEXT,
-    value BYTEA
-);
---
 create table public.users
 (
     user_id       uuid not null primary key,
