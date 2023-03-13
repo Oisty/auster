@@ -1,8 +1,6 @@
 use crate::authentication::reject_anonymous_users;
 use crate::configuration::{DatabaseSettings, Settings};
-use crate::routes::{
-    admin_dashboard, change_password, change_password_form, health_check, log_out, login,
-};
+use crate::routes::{admin_dashboard, change_password, change_password_form, health_check, log_out, login, ready_check};
 use actix_session::storage::RedisSessionStore;
 use actix_session::SessionMiddleware;
 use actix_web::cookie::Key;
@@ -93,7 +91,7 @@ async fn run(
             )
             .route("/signIn", web::post().to(login))
             .route("/health", web::get().to(health_check))
-            .route("/ready", web::get().to(health_check))
+            .route("/ready", web::get().to(ready_check))
             .app_data(db_pool.clone())
             .app_data(base_url.clone())
             .app_data(Data::new(HmacSecret(hmac_secret.clone())))
