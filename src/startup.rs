@@ -1,6 +1,9 @@
 use crate::authentication::reject_anonymous_users;
 use crate::configuration::{DatabaseSettings, Settings};
-use crate::routes::{admin_dashboard, change_password, change_password_form, health_check, log_out, login, ready_check};
+use crate::routes::{
+    admin_dashboard, change_password, change_password_form, health_check, log_out, login,
+    ready_check,
+};
 use actix_session::storage::RedisSessionStore;
 use actix_session::SessionMiddleware;
 use actix_web::cookie::Key;
