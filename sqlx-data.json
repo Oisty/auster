@@ -10,23 +10,29 @@
     },
     "query": "\n        UPDATE users\n        SET password_hash = $1\n        WHERE user_id = $2\n        "
   },
-  "33b11051e779866db9aeb86d28a59db07a94323ffdc59a5a2c1da694ebe9a65f": {
+  "7c7fd8b9613f8a0b52d86cf08233b145af9f9189401c23c690dad7497a3caaba": {
     "describe": {
       "columns": [
         {
-          "name": "username",
+          "name": "category_id: String",
           "ordinal": 0,
+          "type_info": "Text"
+        },
+        {
+          "name": "name: String",
+          "ordinal": 1,
           "type_info": "Text"
         }
       ],
       "nullable": [
+        true,
         false
       ],
       "parameters": {
-        "Right": 1
+        "Right": 0
       }
     },
-    "query": "\n        SELECT username\n        FROM users\n        WHERE user_id = $1\n        "
+    "query": "\n        SELECT category_id as \"category_id: String\", name as \"name: String\"\n        FROM categories\n        "
   },
   "85a3beaeabb5126791028f20cbf655e3c4b6da4d8d016b1cd5f52fedc7d1a590": {
     "describe": {

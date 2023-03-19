@@ -1,8 +1,8 @@
 -- Add up migration script here
 CREATE TABLE users(
-  user_id varchar PRIMARY KEY,
-  username varchar NOT NULL UNIQUE,
-  password_hash varchar NOT NULL
+  user_id text PRIMARY KEY,
+  username text NOT NULL UNIQUE,
+  password_hash text NOT NULL
 );
 
 INSERT INTO users (user_id, username, password_hash)

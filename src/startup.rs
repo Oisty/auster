@@ -17,6 +17,7 @@ use sqlx::sqlite::SqlitePoolOptions;
 use sqlx::SqlitePool;
 use std::net::TcpListener;
 use tracing_actix_web::TracingLogger;
+use crate::routes::category::categories::list_categories;
 
 pub struct Application {
     port: u16,
@@ -85,6 +86,11 @@ async fn run(
             .wrap(TracingLogger::default())
             .service(
                 web::scope("/api")
+                    .service(
+                        web::scope("/categories")
+                            .wrap(from_fn(reject_anonymous_users))
+                            .route("", web::get().to(list_categories)),
+                    )
                     .service(
                         web::scope("/rooms")
                             .wrap(from_fn(reject_anonymous_users))
