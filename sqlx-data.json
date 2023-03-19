@@ -1,6 +1,6 @@
 {
   "db": "SQLite",
-  "2880480077b654e38b63f423ab40680697a500ffe1af1d1b39108910594b581b": {
+  "60b525c178f2cad080563ea589e2c3ebf5f59be1ca8cafbc4dad7346124c92a4": {
     "describe": {
       "columns": [],
       "nullable": [],
@@ -8,13 +8,13 @@
         "Right": 2
       }
     },
-    "query": "\n        UPDATE users\n        SET password_hash = $1\n        WHERE user_id = $2\n        "
+    "query": "\n        UPDATE users\n        SET password_hash = $1\n        WHERE id = $2\n        "
   },
-  "7c7fd8b9613f8a0b52d86cf08233b145af9f9189401c23c690dad7497a3caaba": {
+  "6c3ba86ecee32d0c05ba078dd8784f2527ee133082cbfd7e62858d5151016dfb": {
     "describe": {
       "columns": [
         {
-          "name": "category_id: String",
+          "name": "id: String",
           "ordinal": 0,
           "type_info": "Text"
         },
@@ -32,13 +32,13 @@
         "Right": 0
       }
     },
-    "query": "\n        SELECT category_id as \"category_id: String\", name as \"name: String\"\n        FROM categories\n        "
+    "query": "\n        SELECT id as \"id: String\", name as \"name: String\"\n        FROM categories\n        "
   },
-  "85a3beaeabb5126791028f20cbf655e3c4b6da4d8d016b1cd5f52fedc7d1a590": {
+  "f27a2188a39f151d25a4699af6d08bfc331d1b02cc7584be97c196c7de09e8b5": {
     "describe": {
       "columns": [
         {
-          "name": "user_id",
+          "name": "id",
           "ordinal": 0,
           "type_info": "Text"
         },
@@ -56,6 +56,6 @@
         "Right": 1
       }
     },
-    "query": "\n        SELECT user_id, password_hash\n        FROM users\n        WHERE username = ?\n        "
+    "query": "\n        SELECT id, password_hash\n        FROM users\n        WHERE username = ?\n        "
   }
 }

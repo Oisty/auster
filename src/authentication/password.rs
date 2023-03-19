@@ -25,7 +25,7 @@ async fn get_stored_credentials(
 ) -> Result<Option<(uuid::Uuid, Secret<String>)>, anyhow::Error> {
     let row = sqlx::query!(
         r#"
-        SELECT user_id, password_hash
+        SELECT id, password_hash
         FROM users
         WHERE username = ?
         "#,
@@ -36,7 +36,7 @@ async fn get_stored_credentials(
     .context("Failed to performed a query to retrieve stored credentials.")?
     .map(|row| {
         (
-            uuid::Uuid::parse_str(row.user_id.as_deref().unwrap_or("")).unwrap(),
+            uuid::Uuid::parse_str(row.id.as_deref().unwrap_or("")).unwrap(),
             Secret::new(row.password_hash),
         )
     });
@@ -48,15 +48,15 @@ pub async fn validate_credentials(
     credentials: Credentials,
     pool: &SqlitePool,
 ) -> Result<uuid::Uuid, AuthError> {
-    let mut user_id = None;
+    let mut id = None;
     let mut expected_password_hash = Secret::new(
         "$argon2i$v=19$m=16,t=2,p=1$YXVzdGVyNzQ3ODc2$PSRBJkhieyshQ3rBiJx62Q".to_string(),
     );
 
-    if let Some((stored_user_id, stored_password_hash)) =
+    if let Some((stored_id, stored_password_hash)) =
         get_stored_credentials(&credentials.username, pool).await?
     {
-        user_id = Some(stored_user_id);
+        id = Some(stored_id);
         expected_password_hash = stored_password_hash;
     }
 
@@ -66,7 +66,7 @@ pub async fn validate_credentials(
     .await
     .context("Failed to spawn blocking task.")??;
 
-    user_id
+    id
         .ok_or_else(|| anyhow::anyhow!("Unknown username."))
         .map_err(AuthError::InvalidCredentials)
 }
@@ -93,7 +93,7 @@ fn verify_password_hash(
 
 #[tracing::instrument(name = "Change password", skip(password, pool))]
 pub async fn change_password(
-    user_id: uuid::Uuid,
+    id: uuid::Uuid,
     password: Secret<String>,
     pool: &SqlitePool,
 ) -> Result<(), anyhow::Error> {
@@ -106,10 +106,10 @@ pub async fn change_password(
         r#"
         UPDATE users
         SET password_hash = $1
-        WHERE user_id = $2
+        WHERE id = $2
         "#,
         secret,
-        user_id
+        id
     )
     .execute(pool)
     .await

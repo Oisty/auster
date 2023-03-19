@@ -20,7 +20,7 @@ pub async fn list_categories(
 async fn get_all_categories(pool: &SqlitePool) -> Result<Vec<Category>, Error> {
     let rows = sqlx::query!(
         r#"
-        SELECT category_id as "category_id: String", name as "name: String"
+        SELECT id as "id: String", name as "name: String"
         FROM categories
         "#
     )
@@ -30,7 +30,7 @@ async fn get_all_categories(pool: &SqlitePool) -> Result<Vec<Category>, Error> {
     let categories = rows
         .into_iter()
         .map(|row| Category {
-            category_id: row.category_id.as_ref().unwrap().to_string(),
+            id: row.id.as_ref().unwrap().to_string(),
             name: row.name,
         })
         .collect();
