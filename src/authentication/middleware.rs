@@ -40,7 +40,7 @@ pub async fn reject_anonymous_users(
             next.call(req).await
         }
         None => {
-            let response = see_other("/login");
+            let response = see_other("/signin");
             let e = anyhow::anyhow!("The user has not logged in");
             Err(InternalError::from_response(e, response).into())
         }

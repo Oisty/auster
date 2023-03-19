@@ -1,14 +1,15 @@
-use secrecy::{ExposeSecret, Secret};
+use secrecy::Secret;
 use serde_aux::field_attributes::deserialize_number_from_string;
-use sqlx::postgres::{PgConnectOptions, PgSslMode};
-use sqlx::ConnectOptions;
+use sqlx::migrate::MigrateDatabase;
+use sqlx::sqlite::{SqliteConnectOptions, SqlitePoolOptions};
+use sqlx::{ConnectOptions, Sqlite};
 use std::convert::{TryFrom, TryInto};
+use std::str::FromStr;
 
 #[derive(serde::Deserialize, Clone)]
 pub struct Settings {
     pub database: DatabaseSettings,
     pub application: ApplicationSettings,
-    pub email_client: EmailClientSettings,
     pub redis_uri: Secret<String>,
 }
 
@@ -23,44 +24,39 @@ pub struct ApplicationSettings {
 
 #[derive(serde::Deserialize, Clone)]
 pub struct DatabaseSettings {
-    pub username: String,
-    pub password: Secret<String>,
-    #[serde(deserialize_with = "deserialize_number_from_string")]
-    pub port: u16,
-    pub host: String,
-    pub database_name: String,
-    pub require_ssl: bool,
+    pub database_url: String,
 }
 
 impl DatabaseSettings {
-    pub fn without_db(&self) -> PgConnectOptions {
-        let ssl_mode = if self.require_ssl {
-            PgSslMode::Require
-        } else {
-            PgSslMode::Prefer
-        };
-        PgConnectOptions::new()
-            .host(&self.host)
-            .username(&self.username)
-            .password(self.password.expose_secret())
-            .port(self.port)
-            .ssl_mode(ssl_mode)
+    pub async fn initialize_db(&self) {
+        if !Sqlite::database_exists(&self.database_url)
+            .await
+            .unwrap_or(false)
+        {
+            Sqlite::create_database(&self.database_url).await.unwrap();
+
+            let pool = SqlitePoolOptions::new()
+                .acquire_timeout(std::time::Duration::from_secs(2))
+                .connect_lazy_with(SqliteConnectOptions::from_str(&self.database_url).unwrap());
+
+            sqlx::migrate!()
+                .run(&pool)
+                .await
+                .expect("TODO: panic message");
+
+            pool.close().await;
+        }
     }
 
-    pub fn with_db(&self) -> PgConnectOptions {
-        let mut options = self.without_db().database(&self.database_name);
+    pub fn without_db(&self) -> SqliteConnectOptions {
+        SqliteConnectOptions::from_str(&self.database_url).unwrap()
+    }
+
+    pub fn with_db(&self) -> SqliteConnectOptions {
+        let mut options = self.without_db();
         options.log_statements(tracing::log::LevelFilter::Trace);
         options
     }
-}
-
-#[derive(serde::Deserialize, Clone)]
-pub struct EmailClientSettings {
-    pub base_url: String,
-    pub sender_email: String,
-    pub authorization_token: Secret<String>,
-    #[serde(deserialize_with = "deserialize_number_from_string")]
-    pub timeout_milliseconds: u64,
 }
 
 pub fn get_configuration() -> Result<Settings, config::ConfigError> {
@@ -81,8 +77,6 @@ pub fn get_configuration() -> Result<Settings, config::ConfigError> {
         .add_source(config::File::from(
             configuration_directory.join(environment_filename),
         ))
-        // Add in settings from environment variables (with a prefix of APP and '__' as separator)
-        // E.g. `APP_APPLICATION__PORT=5001 would set `Settings.application.port`
         .add_source(
             config::Environment::with_prefix("APP")
                 .prefix_separator("_")

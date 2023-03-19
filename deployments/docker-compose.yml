@@ -1,15 +1,5 @@
 version: '3'
 services:
-  db:
-    image: postgres:15.1
-    ports:
-      - "5432:5432"
-    environment:
-      POSTGRES_PASSWORD: auster
-      POSTGRES_USER: auster
-      POSTGRES_DB: auster
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
   redis:
     image: 'bitnami/redis:latest'
     environment:

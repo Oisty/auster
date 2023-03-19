@@ -10,6 +10,7 @@ async fn main() -> anyhow::Result<()> {
     init_subscriber(subscriber);
 
     let configuration = get_configuration().expect("Failed to read configuration.");
+    configuration.database.initialize_db().await;
     let application = Application::build(configuration.clone()).await?;
     let application_task = tokio::spawn(application.run_until_stopped());
 

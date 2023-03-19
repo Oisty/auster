@@ -1,9 +1,8 @@
 use crate::authentication::reject_anonymous_users;
 use crate::configuration::{DatabaseSettings, Settings};
-use crate::routes::{
-    admin_dashboard, change_password, change_password_form, health_check, log_out, login,
-    ready_check,
-};
+use crate::routes::auth::signin::signin;
+use crate::routes::auth::signout::logout::signout;
+use crate::routes::{health_check, ready_check};
 use actix_session::storage::RedisSessionStore;
 use actix_session::SessionMiddleware;
 use actix_web::cookie::Key;
@@ -14,8 +13,8 @@ use actix_web_flash_messages::storage::CookieMessageStore;
 use actix_web_flash_messages::FlashMessagesFramework;
 use actix_web_lab::middleware::from_fn;
 use secrecy::{ExposeSecret, Secret};
-use sqlx::postgres::PgPoolOptions;
-use sqlx::PgPool;
+use sqlx::sqlite::SqlitePoolOptions;
+use sqlx::SqlitePool;
 use std::net::TcpListener;
 use tracing_actix_web::TracingLogger;
 
@@ -55,8 +54,8 @@ impl Application {
     }
 }
 
-pub fn get_connection_pool(configuration: &DatabaseSettings) -> PgPool {
-    PgPoolOptions::new()
+pub fn get_connection_pool(configuration: &DatabaseSettings) -> SqlitePool {
+    SqlitePoolOptions::new()
         .acquire_timeout(std::time::Duration::from_secs(2))
         .connect_lazy_with(configuration.with_db())
 }
@@ -65,7 +64,7 @@ pub struct ApplicationBaseUrl(pub String);
 
 async fn run(
     listener: TcpListener,
-    db_pool: PgPool,
+    db_pool: SqlitePool,
     base_url: String,
     hmac_secret: Secret<String>,
     redis_uri: Secret<String>,
@@ -85,14 +84,18 @@ async fn run(
             ))
             .wrap(TracingLogger::default())
             .service(
-                web::scope("/admin")
-                    .wrap(from_fn(reject_anonymous_users))
-                    .route("/dashboard", web::get().to(admin_dashboard))
-                    .route("/password", web::get().to(change_password_form))
-                    .route("/password", web::post().to(change_password))
-                    .route("/logout", web::post().to(log_out)),
+                web::scope("/api")
+                    .service(
+                        web::scope("/rooms")
+                            .wrap(from_fn(reject_anonymous_users))
+                            .route("/", web::get().to(health_check)),
+                    )
+                    .service(
+                        web::scope("/auth")
+                            .route("/signin", web::post().to(signin))
+                            .route("/signout", web::post().to(signout)),
+                    ),
             )
-            .route("/signIn", web::post().to(login))
             .route("/health", web::get().to(health_check))
             .route("/ready", web::get().to(ready_check))
             .app_data(db_pool.clone())

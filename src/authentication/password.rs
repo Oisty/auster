@@ -3,7 +3,7 @@ use anyhow::Context;
 use argon2::password_hash::SaltString;
 use argon2::{Algorithm, Argon2, Params, PasswordHash, PasswordHasher, PasswordVerifier, Version};
 use secrecy::{ExposeSecret, Secret};
-use sqlx::PgPool;
+use sqlx::SqlitePool;
 
 #[derive(thiserror::Error, Debug)]
 pub enum AuthError {
@@ -21,27 +21,32 @@ pub struct Credentials {
 #[tracing::instrument(name = "Get stored credentials", skip(username, pool))]
 async fn get_stored_credentials(
     username: &str,
-    pool: &PgPool,
+    pool: &SqlitePool,
 ) -> Result<Option<(uuid::Uuid, Secret<String>)>, anyhow::Error> {
     let row = sqlx::query!(
         r#"
         SELECT user_id, password_hash
         FROM users
-        WHERE username = $1
+        WHERE username = ?
         "#,
         username,
     )
     .fetch_optional(pool)
     .await
     .context("Failed to performed a query to retrieve stored credentials.")?
-    .map(|row| (row.user_id, Secret::new(row.password_hash)));
+    .map(|row| {
+        (
+            uuid::Uuid::parse_str(row.user_id.as_deref().unwrap_or("")).unwrap(),
+            Secret::new(row.password_hash),
+        )
+    });
     Ok(row)
 }
 
 #[tracing::instrument(name = "Validate credentials", skip(credentials, pool))]
 pub async fn validate_credentials(
     credentials: Credentials,
-    pool: &PgPool,
+    pool: &SqlitePool,
 ) -> Result<uuid::Uuid, AuthError> {
     let mut user_id = None;
     let mut expected_password_hash = Secret::new(
@@ -90,18 +95,20 @@ fn verify_password_hash(
 pub async fn change_password(
     user_id: uuid::Uuid,
     password: Secret<String>,
-    pool: &PgPool,
+    pool: &SqlitePool,
 ) -> Result<(), anyhow::Error> {
     let password_hash = spawn_blocking_with_tracing(move || compute_password_hash(password))
         .await?
         .context("Failed to hash password")?;
+
+    let secret = password_hash.expose_secret();
     sqlx::query!(
         r#"
         UPDATE users
         SET password_hash = $1
         WHERE user_id = $2
         "#,
-        password_hash.expose_secret(),
+        secret,
         user_id
     )
     .execute(pool)
