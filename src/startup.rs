@@ -91,7 +91,7 @@ async fn run(
                             .route("/", web::get().to(health_check)),
                     )
                     .service(
-                        web::scope("/auth")
+                        web::scope("/authentication")
                             .route("/signin", web::post().to(signin))
                             .route("/signout", web::post().to(signout)),
                     ),
