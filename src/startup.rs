@@ -2,6 +2,7 @@ use crate::authentication::reject_anonymous_users;
 use crate::configuration::{DatabaseSettings, Settings};
 use crate::routes::auth::signin::signin;
 use crate::routes::auth::signout::logout::signout;
+use crate::routes::category::categories::list_categories;
 use crate::routes::{health_check, ready_check};
 use actix_session::storage::RedisSessionStore;
 use actix_session::SessionMiddleware;
@@ -17,7 +18,6 @@ use sqlx::sqlite::SqlitePoolOptions;
 use sqlx::SqlitePool;
 use std::net::TcpListener;
 use tracing_actix_web::TracingLogger;
-use crate::routes::category::categories::list_categories;
 
 pub struct Application {
     port: u16,
