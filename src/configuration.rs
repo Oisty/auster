@@ -1,7 +1,7 @@
 use secrecy::Secret;
 use serde_aux::field_attributes::deserialize_number_from_string;
-use sqlx::sqlite::{SqliteConnectOptions};
-use sqlx::{ConnectOptions};
+use sqlx::sqlite::SqliteConnectOptions;
+use sqlx::ConnectOptions;
 use std::convert::{TryFrom, TryInto};
 use std::str::FromStr;
 
