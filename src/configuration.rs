@@ -1,8 +1,7 @@
 use secrecy::Secret;
 use serde_aux::field_attributes::deserialize_number_from_string;
-use sqlx::migrate::MigrateDatabase;
-use sqlx::sqlite::{SqliteConnectOptions, SqlitePoolOptions};
-use sqlx::{ConnectOptions, Sqlite};
+use sqlx::sqlite::{SqliteConnectOptions};
+use sqlx::{ConnectOptions};
 use std::convert::{TryFrom, TryInto};
 use std::str::FromStr;
 
@@ -28,26 +27,6 @@ pub struct DatabaseSettings {
 }
 
 impl DatabaseSettings {
-    pub async fn initialize_db(&self) {
-        if !Sqlite::database_exists(&self.database_url)
-            .await
-            .unwrap_or(false)
-        {
-            Sqlite::create_database(&self.database_url).await.unwrap();
-
-            let pool = SqlitePoolOptions::new()
-                .acquire_timeout(std::time::Duration::from_secs(2))
-                .connect_lazy_with(SqliteConnectOptions::from_str(&self.database_url).unwrap());
-
-            sqlx::migrate!()
-                .run(&pool)
-                .await
-                .expect("TODO: panic message");
-
-            pool.close().await;
-        }
-    }
-
     pub fn without_db(&self) -> SqliteConnectOptions {
         SqliteConnectOptions::from_str(&self.database_url).unwrap()
     }
