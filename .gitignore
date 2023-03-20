@@ -33,3 +33,7 @@ node_modules/
 
 # Ignore mac specific files
 .DS_Store
+
+# SqLite Database
+*.db
+*.db-*

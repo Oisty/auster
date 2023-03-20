@@ -3,7 +3,7 @@ use anyhow::Context;
 use argon2::password_hash::SaltString;
 use argon2::{Algorithm, Argon2, Params, PasswordHash, PasswordHasher, PasswordVerifier, Version};
 use secrecy::{ExposeSecret, Secret};
-use sqlx::PgPool;
+use sqlx::SqlitePool;
 
 #[derive(thiserror::Error, Debug)]
 pub enum AuthError {
@@ -21,37 +21,42 @@ pub struct Credentials {
 #[tracing::instrument(name = "Get stored credentials", skip(username, pool))]
 async fn get_stored_credentials(
     username: &str,
-    pool: &PgPool,
+    pool: &SqlitePool,
 ) -> Result<Option<(uuid::Uuid, Secret<String>)>, anyhow::Error> {
     let row = sqlx::query!(
         r#"
-        SELECT user_id, password_hash
+        SELECT id, password_hash
         FROM users
-        WHERE username = $1
+        WHERE username = ?
         "#,
         username,
     )
     .fetch_optional(pool)
     .await
     .context("Failed to performed a query to retrieve stored credentials.")?
-    .map(|row| (row.user_id, Secret::new(row.password_hash)));
+    .map(|row| {
+        (
+            uuid::Uuid::parse_str(row.id.as_deref().unwrap_or("")).unwrap(),
+            Secret::new(row.password_hash),
+        )
+    });
     Ok(row)
 }
 
 #[tracing::instrument(name = "Validate credentials", skip(credentials, pool))]
 pub async fn validate_credentials(
     credentials: Credentials,
-    pool: &PgPool,
+    pool: &SqlitePool,
 ) -> Result<uuid::Uuid, AuthError> {
-    let mut user_id = None;
+    let mut id = None;
     let mut expected_password_hash = Secret::new(
         "$argon2i$v=19$m=16,t=2,p=1$YXVzdGVyNzQ3ODc2$PSRBJkhieyshQ3rBiJx62Q".to_string(),
     );
 
-    if let Some((stored_user_id, stored_password_hash)) =
+    if let Some((stored_id, stored_password_hash)) =
         get_stored_credentials(&credentials.username, pool).await?
     {
-        user_id = Some(stored_user_id);
+        id = Some(stored_id);
         expected_password_hash = stored_password_hash;
     }
 
@@ -61,8 +66,7 @@ pub async fn validate_credentials(
     .await
     .context("Failed to spawn blocking task.")??;
 
-    user_id
-        .ok_or_else(|| anyhow::anyhow!("Unknown username."))
+    id.ok_or_else(|| anyhow::anyhow!("Unknown username."))
         .map_err(AuthError::InvalidCredentials)
 }
 
@@ -88,21 +92,23 @@ fn verify_password_hash(
 
 #[tracing::instrument(name = "Change password", skip(password, pool))]
 pub async fn change_password(
-    user_id: uuid::Uuid,
+    id: uuid::Uuid,
     password: Secret<String>,
-    pool: &PgPool,
+    pool: &SqlitePool,
 ) -> Result<(), anyhow::Error> {
     let password_hash = spawn_blocking_with_tracing(move || compute_password_hash(password))
         .await?
         .context("Failed to hash password")?;
+
+    let secret = password_hash.expose_secret();
     sqlx::query!(
         r#"
         UPDATE users
         SET password_hash = $1
-        WHERE user_id = $2
+        WHERE id = $2
         "#,
-        password_hash.expose_secret(),
-        user_id
+        secret,
+        id
     )
     .execute(pool)
     .await

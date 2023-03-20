@@ -7,7 +7,7 @@ use actix_web::web;
 use actix_web::HttpResponse;
 use actix_web_flash_messages::FlashMessage;
 use secrecy::Secret;
-use sqlx::PgPool;
+use sqlx::SqlitePool;
 
 #[derive(serde::Deserialize)]
 pub struct FormData {
@@ -19,10 +19,10 @@ pub struct FormData {
     skip(form, pool, session),
     fields(username=tracing::field::Empty, user_id=tracing::field::Empty)
 )]
-// We are now injecting `PgPool` to retrieve stored credentials from the database
-pub async fn login(
+
+pub async fn signin(
     form: web::Form<FormData>,
-    pool: web::Data<PgPool>,
+    pool: web::Data<SqlitePool>,
     session: TypedSession,
 ) -> Result<HttpResponse, InternalError<LoginError>> {
     let credentials = Credentials {
@@ -38,7 +38,7 @@ pub async fn login(
                 .insert_user_id(user_id)
                 .map_err(|e| login_redirect(LoginError::UnexpectedError(e.into())))?;
             Ok(HttpResponse::SeeOther()
-                .insert_header((LOCATION, "/admin/dashboard"))
+                .insert_header((LOCATION, "http://localhost:5173/"))
                 .finish())
         }
         Err(e) => {
@@ -54,7 +54,7 @@ pub async fn login(
 fn login_redirect(e: LoginError) -> InternalError<LoginError> {
     FlashMessage::error(e.to_string()).send();
     let response = HttpResponse::SeeOther()
-        .insert_header((LOCATION, "/login"))
+        .insert_header((LOCATION, "/signin"))
         .finish();
     InternalError::from_response(e, response)
 }

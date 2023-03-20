@@ -1,7 +1,5 @@
-mod admin;
-mod health_check;
-mod login;
+pub mod auth;
+pub mod category;
+pub mod health_check;
 
-pub use admin::*;
 pub use health_check::*;
-pub use login::*;
