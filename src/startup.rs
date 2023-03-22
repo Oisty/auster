@@ -95,12 +95,12 @@ async fn run(
                         web::scope("/rooms")
                             .wrap(from_fn(reject_anonymous_users))
                             .route("/", web::get().to(health_check)),
-                    )
-                    .service(
-                        web::scope("/authentication")
-                            .route("/signin", web::post().to(signin))
-                            .route("/signout", web::post().to(signout)),
                     ),
+            )
+            .service(
+                web::scope("/authentication")
+                    .route("/signin", web::post().to(signin))
+                    .route("/signout", web::post().to(signout)),
             )
             .route("/health", web::get().to(health_check))
             .route("/ready", web::get().to(ready_check))
