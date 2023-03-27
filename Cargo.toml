@@ -25,7 +25,7 @@ config = { version = "0.13.3", default-features = false, features = ["yaml"] }
 log = "0.4.17"
 rand = { version = "0.8.5", features = ["std_rng"] }
 secrecy = { version = "0.8.0", features = ["serde"] }
-serde = "1.0.157"
+serde = "1.0.158"
 serde-aux = "4.1.2"
 serde_json = "1.0.93"
 sqlx = { version = "0.6.2", default-features = false, features = ["runtime-actix-rustls", "macros", "sqlite", "uuid", "chrono", "migrate", "offline"] }
