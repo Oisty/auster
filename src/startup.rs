@@ -34,6 +34,7 @@ impl Application {
         );
         let listener = TcpListener::bind(address)?;
         let port = listener.local_addr().unwrap().port();
+        println!("Listening on port {}", port.to_string());
         let server = run(
             listener,
             connection_pool,
