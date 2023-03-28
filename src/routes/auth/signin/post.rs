@@ -5,6 +5,7 @@ use actix_web::error::InternalError;
 use actix_web::http::header::LOCATION;
 use actix_web::web;
 use actix_web::HttpResponse;
+use actix_web::Result;
 use actix_web_flash_messages::FlashMessage;
 use secrecy::Secret;
 use sqlx::SqlitePool;
@@ -49,6 +50,14 @@ pub async fn signin(
             Err(login_redirect(e))
         }
     }
+}
+
+pub async fn signin_view() -> Result<HttpResponse, actix_web::Error> {
+    let content = HttpResponse::Ok()
+        .content_type("text/html; charset=utf-8")
+        .body(include_str!("../../../static/sign in.html"));
+
+    Ok(content)
 }
 
 fn login_redirect(e: LoginError) -> InternalError<LoginError> {

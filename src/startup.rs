@@ -1,6 +1,6 @@
 use crate::authentication::reject_anonymous_users;
 use crate::configuration::{DatabaseSettings, Settings};
-use crate::routes::auth::signin::signin;
+use crate::routes::auth::signin::{signin, signin_view};
 use crate::routes::auth::signout::logout::signout;
 use crate::routes::category::categories::list_categories;
 use crate::routes::{health_check, ready_check};
@@ -100,6 +100,7 @@ async fn run(
             )
             .service(
                 web::scope("/authentication")
+                    .route("/signin", web::get().to(signin_view))
                     .route("/signin", web::post().to(signin))
                     .route("/signout", web::post().to(signout)),
             )
