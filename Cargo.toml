@@ -48,5 +48,5 @@ quickcheck = "1.0.3"
 quickcheck_macros = "1.0.0"
 serde_json = "1.0.93"
 serde_urlencoded = "0.7.1"
-wiremock = "0.5.17"
+wiremock = "0.5.19"
 
