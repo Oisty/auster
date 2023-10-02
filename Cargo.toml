@@ -12,7 +12,7 @@ name = "auster"
 path = "src/lib.rs"
 
 [dependencies]
-actix-session = { version = "0.7.2", features = ["redis-rs-tls-session"] }
+actix-session = { version = "0.8.0", features = ["redis-rs-tls-session"] }
 actix-web = "4.3.1"
 actix-web-flash-messages = { version = "0.4.2", features = ["cookies"] }
 actix-web-lab = "0.19.1"
