@@ -42,7 +42,7 @@ uuid = { version = "1.3.0", features = ["v4", "serde"] }
 cargo-sort = "1.0.9"
 claims = "0.7.1"
 fake = "2.5.0"
-linkify = "0.9"
+linkify = "0.10"
 once_cell = "1.7.2"
 quickcheck = "1.0.3"
 quickcheck_macros = "1.0.0"
