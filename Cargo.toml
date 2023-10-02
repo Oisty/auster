@@ -22,7 +22,7 @@ argon2 = { version = "0.5.0", features = ["std"] }
 base64 = "0.21.0"
 chrono = { version = "0.4.24", default-features = false, features = ["clock"] }
 config = { version = "0.13.3", default-features = false, features = ["yaml"] }
-log = "0.4.17"
+log = "0.4.20"
 rand = { version = "0.8.5", features = ["std_rng"] }
 secrecy = { version = "0.8.0", features = ["serde"] }
 serde = "1.0.158"
